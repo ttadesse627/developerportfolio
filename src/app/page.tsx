@@ -1,4 +1,4 @@
-import { ArrowRight, Code, Database, Cloud, Users, Server } from 'lucide-react';
+import { ArrowRight, Database, Cloud, Users, Server } from 'lucide-react';
 import Link from 'next/link';
 import { projects, skills } from '../services/data';
 import ProjectCard from '../components/ProjectCard';

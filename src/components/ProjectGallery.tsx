@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2} from 'lucide-react';
 import { ImageInfo } from '@/types/image';
 import ModalGallery from './ModalGallery'; // You'll need to create this component
 

@@ -20,8 +20,8 @@ export async function getImagesFromFolder(
         name: file,
         path: path.posix.join(folderName, file),
       }));
-  } catch (error: any) {
-    if (error.code !== 'ENOENT') {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'code' in error && error.code !== 'ENOENT') {
       console.error(`Error reading folder ${folderName}:`, error);
     }
     return [];

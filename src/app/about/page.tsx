@@ -13,7 +13,6 @@ export default function AboutPage() {
     const [experiences, setExperiences] = useState<Experience[]>([]);
     const [skills, setSkills] = useState<Skill[]>([]);
     const [aboutInfo, setAboutInfo] = useState<AboutInfo>();
-    const [loading, setLoading] = useState(false);
 
      useEffect(() => {
     async function loadExperiences() {
@@ -22,7 +21,6 @@ export default function AboutPage() {
       console.log("Response from the server: ", res)
       const data = await res.json();
       setExperiences(data);
-      setLoading(false);
     }
 
     async function loadSkills() {
@@ -31,7 +29,6 @@ export default function AboutPage() {
       console.log("Response from the server: ", res)
       const data = await res.json();
       setSkills(data);
-      setLoading(false);
     }
 
     async function loadAboutInfo() {
@@ -40,7 +37,6 @@ export default function AboutPage() {
       console.log("Response from the server: ", res)
       const data = await res.json();
       setAboutInfo(data);
-      setLoading(false);
     }
 
     loadExperiences();
@@ -48,23 +44,6 @@ export default function AboutPage() {
     loadAboutInfo();
   }, []);
 
-
-
-//   if (loading) {
-//     return (
-//       <div className="aspect-video flex items-center justify-center">
-//         Loading images…
-//       </div>
-//     );
-//   }
-
-//   if (images.length === 0) {
-//     return (
-//       <div className="aspect-video flex items-center justify-center text-gray-500">
-//         No images found
-//       </div>
-//     );
-//   }
 
   const categories = Array.from(new Set(skills.map(skill => skill.category)));
 

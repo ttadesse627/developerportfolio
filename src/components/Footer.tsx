@@ -35,7 +35,7 @@ export default function Footer() {
           </div>
           
           <div className="space-y-6">
-            <h4 className="text-xl font-semibold text-gray-900 dark:text-white">Let's Connect</h4>
+            <h4 className="text-xl font-semibold text-gray-900 dark:text-white">Let&apos;s Connect</h4>
               <div className="flex flex-wrap gap-3">
                 {socialLinks.map((social) => (
                   <div

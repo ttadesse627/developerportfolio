@@ -1,7 +1,7 @@
 // components/ui/custom-toast.tsx
 'use client';
 
-import { Toaster as SonnerToaster, toast as sonnerToast } from 'sonner';
+import { Toaster as SonnerToaster, ToastT, toast as sonnerToast } from 'sonner';
 import { CheckCircle, XCircle, Info, AlertCircle } from 'lucide-react';
 
 // Custom toast types
@@ -29,20 +29,22 @@ export const toast = ({ title, description, type = 'info' }: ToastProps) => {
     warning: 'border-amber-100 bg-amber-50',
   };
 
-  return sonnerToast.custom((t: any) => (
+  return sonnerToast.custom(
+  (id: string | number) => (
     <div
       className={`${bgColors[type]} border-l-4 ${
-        type === 'success' ? 'border-l-emerald-500' :
-        type === 'error' ? 'border-l-rose-500' :
-        type === 'warning' ? 'border-l-amber-500' : 'border-l-blue-500'
-      } rounded-lg p-4 shadow-lg w-full max-w-md transition-all duration-300 ${
-        t.visible ? 'animate-in slide-in-from-right-8' : 'animate-out fade-out-80'
-      }`}
+        type === 'success'
+          ? 'border-l-emerald-500'
+          : type === 'error'
+          ? 'border-l-rose-500'
+          : type === 'warning'
+          ? 'border-l-amber-500'
+          : 'border-l-blue-500'
+      } rounded-lg p-4 shadow-lg w-full max-w-md`}
     >
       <div className="flex items-start gap-3">
-        <div className="flex-shrink-0">
-          {icons[type]}
-        </div>
+        <div className="flex-shrink-0">{icons[type]}</div>
+
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900 text-sm">
             {title}
@@ -53,31 +55,39 @@ export const toast = ({ title, description, type = 'info' }: ToastProps) => {
             </p>
           )}
         </div>
+
         <button
-          onClick={() => sonnerToast.dismiss(t)}
+          onClick={() => sonnerToast.dismiss(id)}
           className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
         >
           <XCircle className="h-4 w-4" />
         </button>
       </div>
-      {/* Progress bar */}
+
+      {/* Progress bar (static duration) */}
       <div className="mt-2 h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-        <div 
+        <div
           className={`h-full ${
-            type === 'success' ? 'bg-emerald-500' :
-            type === 'error' ? 'bg-rose-500' :
-            type === 'warning' ? 'bg-amber-500' : 'bg-blue-500'
+            type === 'success'
+              ? 'bg-emerald-500'
+              : type === 'error'
+              ? 'bg-rose-500'
+              : type === 'warning'
+              ? 'bg-amber-500'
+              : 'bg-blue-500'
           }`}
           style={{
-            animation: `shrink ${t.duration || 5000}ms linear forwards`,
+            animation: 'shrink 5000ms linear forwards',
             transformOrigin: 'left',
           }}
         />
       </div>
     </div>
-  ), {
+  ),
+  {
     duration: 5000,
-  });
+  }
+);
 };
 
 

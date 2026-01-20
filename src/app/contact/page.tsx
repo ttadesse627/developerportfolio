@@ -89,15 +89,15 @@ export default function ContactPage() {
     setIsSubmitting(false);
     setIsSubmitted(true);
 
-    const resetTimer = setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      });
-    }, 3000);
+    // const resetTimer = setTimeout(() => {
+    //   setIsSubmitted(false);
+    //   setFormData({
+    //     name: '',
+    //     email: '',
+    //     subject: '',
+    //     message: '',
+    //   });
+    // }, 3000);
 
     // Optional: Show a follow-up toast when form resets
     setTimeout(() => {
@@ -110,7 +110,7 @@ export default function ContactPage() {
     
     // Show error toast
     toast.error(
-      'Connection error. Please check your internet connection and try again'
+      `Connection error. Please check your internet connection and try again. ${err}`
     );
     
     setIsSubmitting(false);
