@@ -1,444 +1,139 @@
-"use client";
+import { ArrowRight, Code, Database, Cloud, Users, Server } from 'lucide-react';
+import Link from 'next/link';
+import { projects, skills } from '../services/data';
+import ProjectCard from '../components/ProjectCard';
+import SkillBadge from '../components/SkillBadge';
 
-import { useState } from "react";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import { FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
-import { BsBrightnessHigh, BsMoon } from "react-icons/bs";
-import { FiMail } from "react-icons/fi";
-import { SiDotnet, SiReact, SiAngular, SiMysql, SiGit } from "react-icons/si";
-import { motion } from "framer-motion";
-import { data } from "./data";
-import {formatDate} from "./services";
-
-const Home = () => {
-  const [activeSection, setActiveSection] = useState("home");
-  const [isBlack, setIsBlack] = useState(false);
-  const [navLinkDisplay, setNavLinkDisplay] = useState("hidden");
-
-  const skills = [
-    { name: "ASP.NET Core", icon: <SiDotnet className="text-purple-600 text-4xl" /> },
-    { name: "React", icon: <SiReact className="text-blue-500 text-4xl" /> },
-    { name: "Angular", icon: <SiAngular className="text-red-600 text-4xl" /> },
-    { name: "SQL/MySQL", icon: <SiMysql className="text-blue-400 text-4xl" /> },
-    { name: "Git", icon: <SiGit className="text-orange-600 text-4xl" /> },
+export default function HomePage() {
+  const featuredProjects = projects.filter(project => project.featured);
+  
+  const services = [
+    {
+      icon: Server,
+      title: "Backend Development",
+      description: "Building robust APIs and server-side logic with ASP.NET Core, Node.js"
+    },
+    {
+      icon: Database,
+      title: "Database Design",
+      description: "Designing and optimizing SQL and NoSQL databases"
+    },
+    {
+      icon: Cloud,
+      title: "Cloud Solutions",
+      description: "Deploying and managing applications on cloud platforms"
+    },
+    {
+      icon: Users,
+      title: "Team Collaboration",
+      description: "Working effectively in agile development teams"
+    }
   ];
 
-  const projects = data;
-  const lightTheme = "bg-white/90 text-black shadow-md";
-  const darkTheme = "bg-stone-800 text-white shadow-md";
-  const lightText = "text-gray-300";
-  const darkText = "text-gray-800";
-
-  const [theme, setTheme] = useState(lightTheme);
-  const [textColor, setTextColor] = useState(darkText);
-  const inputStyle = theme==darkTheme?"bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70": 
-                  "bg-gray-50 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-400";
-  const mobileViewClass = "flex flex-col justify-between items-center";
-  const mobileHideClass = "hidden";
-
-  const changeTheme = () =>{
-
-    if (!isBlack) {
-      setTheme(darkTheme);
-      setTextColor(lightText);
-      setIsBlack(!isBlack);
-      console.log("theme: "+theme);
-    }
-    else 
-    {
-      setTheme(lightTheme);
-      setTextColor(darkText);
-      setIsBlack(!isBlack);
-    }
-  };
-
-  const displayMobileNav = () =>{
-    if (navLinkDisplay === mobileHideClass) {
-      setNavLinkDisplay(mobileViewClass);
-    }
-    else setNavLinkDisplay(mobileHideClass);
-  };
-
   return (
-    <>
-      <Head>
-        <title>Tesfaye Tadesse | Full-Stack Developer</title>
-        <meta name="description" content="Professional portfolio of Tesfaye Tadesse, Full-Stack Developer" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {/* Navigation */}
-      <nav className={`fixed w-full backdrop-blur-sm z-50 ${theme}`}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-          <Link href="#home" className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
-              <Image
-                src="/profile.jpg"
-                alt="Tesfaye"
-                width={50}
-                height={50}
-                className="rounded-full border-2 border-yellow-400"
-              />
-            </div>
-            <span className="text-lg sm:text-xl font-semibold">Tesfaye Tadesse</span>
-          </Link>
-          {/* Desktop Nav */}
-          <div className={`hidden md:flex space-x-6 lg:space-x-8`}>
-            {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
-              <Link
-                key={item}
-                href={`#${item}`}
-                className={`capitalize transition-colors ${activeSection === item ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-blue-500'}`}
-                onClick={() => setActiveSection(item)}
-              >
-                {item}
-              </Link>
-            ))}
-          </div>
-          {/* Theme Button */}
-          <button onClick={changeTheme} className="ml-2">
-            <span>
-              {isBlack ? (<BsBrightnessHigh />) : (<BsMoon />)}
-            </span>
-          </button>
-          {/* Hamburger */}
-          <button className="md:hidden ml-2 text-gray-700" onClick={displayMobileNav}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-        {/* Mobile Nav Overlay */}
-        <div className={`${navLinkDisplay} md:hidden absolute top-0 left-0 w-full h-screen bg-black/70 flex-col items-center justify-center z-40 transition-all`}>
-          <div className={`flex flex-col space-y-8 ${theme} w-4/5 mx-auto mt-24 p-8 rounded-xl shadow-lg`}>
-            {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
-              <Link
-                key={item}
-                href={`#${item}`}
-                className={`capitalize text-lg transition-colors ${activeSection === item ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-blue-500'}`}
-                onClick={() => {
-                  setActiveSection(item);
-                  setNavLinkDisplay(mobileHideClass);
-                }}
-              >
-                {item}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </nav>
-
-      <main className={`pt-20 ${theme}`}>
-        {/* Hero Section */}
-        <section id="home" className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 shadow-md">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-4xl text-center"
-          >
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6">
-              Hi, I&apos;m <span className="text-blue-600">Tesfaye Tadesse</span>
-            </h1>
-            <h2 className="text-xl sm:text-2xl md:text-3xl mb-8">
-              Software Developer
-            </h2>
-            <p className={`text-base sm:text-lg ${textColor} mb-10 max-w-2xl mx-auto`}>
-              I build modern, scalable web applications with clean code and intuitive user experiences.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link
-                href="#projects"
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-lg"
-              >
-                View My Work
-              </Link>
-              <Link
-                href="#contact"
-                className="px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
-              >
-                Contact Me
-              </Link>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* About Section */}
-        <section id="about" className={`py-20 px-6 ${theme}`}>
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16">
-              About <span className="text-blue-600">Me</span>
-            </h2>
-            <div className="flex flex-col md:flex-row items-center gap-12">
-              <div className="md:w-1/3 flex justify-center">
-                <div className="w-64 h-64 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 overflow-hidden shadow-xl">
-                  {/* Placeholder for profile image */}
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
-                    <Image
-                      src="/profile.jpg"
-                      alt="Tesfaye"
-                      width={300}
-                      height={300}
-                      className="rounded-full border-2 border-yellow-400 bg-gray-900"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={`md:w-2/3 ${textColor} text-lg`}>
-                <p className="mb-6">
-                  I&apos;m a dedicated Software Developer with expertise in designing, developing, and testing robust software solutions.
-                </p>
-                <p className="mb-6">
-                  My specialization lies in backend web development, API development & integration, and database design. I&apos;m passionate about implementing modern technologies to build efficient and scalable applications.
-                </p>
-                <p className="">
-                  When I&apos;m not coding, you can find me exploring new technologies, contributing to open-source projects, or mentoring aspiring developers.
-                </p>
+    <div>
+      {/* Hero Section */}
+      <section className="section-padding bg-gradient-to-br from-gray-900 to-secondary dark:from-gray-800 dark:to-gray-900 text-white">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="animate-fade-in">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                Full Stack Developer
+                <span className="block text-primary dark:text-primary-dark mt-2">Building Digital Solutions</span>
+              </h1>
+              <p className="text-xl text-gray-300 dark:text-gray-400 mb-8">
+                I create efficient, scalable web applications using modern technologies
+                like ASP.NET Core, React, and DevOps platforms.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/projects" className="btn-primary">
+                  View Projects <ArrowRight className="inline ml-2 h-5 w-5" />
+                </Link>
+                <Link href="/contact" className="btn-secondary">
+                  Get In Touch
+                </Link>
               </div>
             </div>
-          </div>
-        </section>
-  
-        {/* Experience Section */}
-        <section id="experience" className={`py-20 bg-gray-50 px-6 ${theme}`}>
-          <div className="max-w-4xl mx-auto">
-            <h2 className={`text-3xl font-bold text-center mb-16 ${theme===lightTheme?"text-gray-700":"text-gray-400"}`}>
-              Professional <span className="text-blue-600">Experience</span>
-            </h2>
             
-            <div className="space-y-12">
-              {/* Current Job */}
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                className="p-8 rounded-xl shadow-md"
-              >
-                <div className="flex items-start">
-                  <div className="mr-6">
-                    <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
-                      <span className="text-blue-600 text-2xl font-bold">AD</span>
+            <div className="relative">
+              <div className="bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 transform rotate-3">
+                <div className="bg-white/5 dark:bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 -rotate-3">
+                  <h3 className="text-2xl font-bold mb-4">Quick Stats</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-4 bg-white/5 dark:bg-gray-800/50 rounded-lg">
+                      <div className="text-3xl font-bold text-primary dark:text-primary-dark">3+</div>
+                      <div className="text-gray-300 dark:text-gray-400">Years Experience</div>
+                    </div>
+                    <div className="text-center p-4 bg-white/5 dark:bg-gray-800/50 rounded-lg">
+                      <div className="text-3xl font-bold text-primary dark:text-primary-dark">15+</div>
+                      <div className="text-gray-300 dark:text-gray-400">Projects Completed</div>
+                    </div>
+                    <div className="text-center p-4 bg-white/5 dark:bg-gray-800/50 rounded-lg">
+                      <div className="text-3xl font-bold text-primary dark:text-primary-dark">5+</div>
+                      <div className="text-gray-300 dark:text-gray-400">Happy Clients</div>
+                    </div>
+                    <div className="text-center p-4 bg-white/5 dark:bg-gray-800/50 rounded-lg">
+                      <div className="text-3xl font-bold text-primary dark:text-primary-dark">15+</div>
+                      <div className="text-gray-300 dark:text-gray-400">Technologies</div>
                     </div>
                   </div>
-                  <div>
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                      <h3 className="text-xl font-bold text-gray-800">Software Developer</h3>
-                      <span className="text-blue-600 font-medium">{formatDate(2023,2)} – Present</span>
-                    </div>
-                    <p className="text-gray-600 font-medium mb-4">Appdiv Systems</p>
-                    <ul className="space-y-3">
-                      <li className="flex items-start">
-                        <span className="text-blue-500 mr-2 mt-1">•</span>
-                        <span>Designed and implemented <strong className="text-gray-800">database schemas and APIs</strong> using <strong className="text-gray-800">ASP.NET Core</strong>, ensuring scalability and performance</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-blue-500 mr-2 mt-1">•</span>
-                        <span>Developed and tested <strong className="text-gray-800">multiple projects</strong>, delivering high-quality solutions that met client requirements</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-blue-500 mr-2 mt-1">•</span>
-                        <span>Identified and reported bugs, contributing to improved system reliability and user experience</span>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Certifications Section */}
-        <section id="certifications" className={`py-20 ${theme} px-6`}>
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16">
-              Professional <span className="text-blue-600">Certifications</span>
-            </h2>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Scrum Certification */}
-              <motion.div 
-                whileHover={{ y: -5 }}
-                className="p-6 rounded-xl border border-gray-400"
+      {/* Services Section */}
+      <section className="section-padding">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">What I Do</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className="card hover:shadow-xl transition-shadow p-3 "
               >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                    <span className="text-blue-600 text-xl">🏆</span>
-                  </div>
-                  <h3 className="text-lg font-bold">Scrum Fundamental Certified</h3>
+                <div className='flex justify-center'>
+                  <service.icon className="h-12 w-12 text-primary dark:text-primary-dark mb-4" />
                 </div>
-                <p className="text-gray-600 mb-4">Agile Development Methodology (SCRUMstudy)</p>
-                <a
-                  href="https://www.scrumstudy.com/certification/verify?type=SFC&number=965929"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  View Credential
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
-              </motion.div>
-
-              {/* Data Analysis Certification */}
-              <motion.div
-                whileHover={{ y: -5 }}
-                className="p-6 rounded-xl border border-gray-400"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
-                    <span className="text-purple-600 text-xl">📊</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-800">Data Analysis Fundamentals</h3>
-                </div>
-                <p className="text-gray-600 mb-4">Udacity Nanodegree Program</p>
-                <a
-                  href="https://www.udacity.com/certificate/e/49a2aa7a-4bf8-11ef-9ee7-af594eae9c42"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  View Credential
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Skills Section */}
-        <section id="skills" className={`py-20 px-6 ${theme}`}>
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
-              My <span className="text-blue-600">Skills</span>
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-              {skills.map((skill, index) => (
-                <div
-                  key={index}
-                  // whileHover={{ y: -5 }}
-                  className="p-6 rounded-xl shadow-md flex flex-col items-center text-center"
-                >
-                  {skill.icon}
-                  <h3 className="mt-4 font-medium">{skill.name}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section id="projects" className={`py-20 px-6 ${theme}`}>
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
-              Featured <span className="text-blue-600">Projects</span>
-            </h2>
-            {projects.map((project) => (
-              <div key={project.id} className="mb-16">
-                <div className="rounded-xl overflow-hidden shadow-lg">
-                  <div className="h-64 flex items-center justify-center">
-                    <span>Project Preview</span>
-                  </div>
-                  <div className="p-8">
-                    <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
-                    <p className="mb-6">{project.description}</p>
-                    <div className="mb-6">
-                      <h4 className="font-semibold mb-2">Technologies Used:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech, i) => (
-                          <span key={i} className="text-blue-800 px-3 py-1 rounded-full text-sm">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <Link
-                      href={project.githubUrl?? ""}
-                      className="inline-flex items-center px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
-                    >
-                      <FaGithub className="mr-2" />
-                      View on GitHub
-                    </Link>
-                  </div>
-                </div>
+                <h3 className="text-xl font-semibold mb-3 dark:text-white">{service.title}</h3>
+                <p className="text-secondary">{service.description}</p>
               </div>
             ))}
           </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact" className={`py-20 bg-gradient-to-br px-6 ${theme}`}>
-          <div className={`max-w-4xl mx-auto text-center`}>
-            <h2 className="text-3xl font-bold mb-4">Let&apos;s Connect</h2>
-            <p className="text-xl mb-12 max-w-2xl mx-auto">
-              Have a project in mind or want to discuss potential opportunities? I&apos;d love to hear from you!
-            </p>
-            <div className="flex justify-center space-x-6 mb-12">
-              <a
-                href="https://t.me/ttadesse627"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                <FaTelegram className="text-xl" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/ttadesse627"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                <FaLinkedin className="text-xl" />
-              </a>
-              <a
-                href="mailto:ttadesse627@gmail.com"
-                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                <FiMail className="text-xl" />
-              </a>
-            </div>
-            <form className="max-w-md mx-auto">
-              <div className="grid grid-cols-1 gap-6">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className={`px-4 py-3 rounded-lg ${inputStyle} placeholder-foreground`}
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className={`px-4 py-3 rounded-lg ${inputStyle}`}
-                />
-                <textarea
-                  placeholder="Your Message"
-                  rows={4}
-                  className={`px-4 py-3 rounded-lg ${inputStyle}`}>
-                </textarea>
-                <button
-                  type="submit"
-                  className="px-6 py-3 text-blue-600 rounded-lg font-medium hover:bg-blue-300 transition-colors">Send Message
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <p>© {new Date().getFullYear()} Tesfaye Tadesse. All rights reserved.</p>
-          <p className="mt-2 text-gray-400 text-sm">
-            Built with Next.js, Tailwind CSS, and ❤️
-          </p>
         </div>
-      </footer>
-    </>
+      </section>
+
+      {/* Featured Projects */}
+      <section className="section-padding bg-gray-100 dark:bg-gray-900/50">
+        <div className="container mx-auto">
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-3xl font-bold dark:text-white">Featured Projects</h2>
+            <Link href="/projects" className="text-primary dark:text-primary-dark hover:text-primary/80 dark:hover:text-primary-dark/80 font-medium">
+              View All Projects <ArrowRight className="inline ml-1 h-4 w-4" />
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {featuredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section className="section-padding">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Skills & Technologies</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {skills.map((skill, index) => (
+              <SkillBadge key={index} skill={skill} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   );
-};
-
-export default Home;
-
-
+}
