@@ -1,7 +1,7 @@
 // components/ui/custom-toast.tsx
 'use client';
 
-import { Toaster as SonnerToaster, ToastT, toast as sonnerToast } from 'sonner';
+import { Toaster as SonnerToaster, toast as sonnerToast } from 'sonner';
 import { CheckCircle, XCircle, Info, AlertCircle } from 'lucide-react';
 
 // Custom toast types
